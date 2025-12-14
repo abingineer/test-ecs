@@ -1,4 +1,9 @@
 {
+  "compatibilities": [
+    "EC2",
+    "MANAGED_INSTANCES",
+    "FARGATE"
+  ],
   "containerDefinitions": [
     {
       "cpu": 0,
@@ -33,6 +38,7 @@
     }
   ],
   "cpu": "1024",
+  "enableFaultInjection": false,
   "executionRoleArn": "arn:aws:iam::352854872264:role/ecsTaskExecutionRole",
   "family": "test-ecs-task",
   "memory": "3072",
