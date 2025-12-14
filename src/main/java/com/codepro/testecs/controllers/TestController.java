@@ -10,11 +10,11 @@ public class TestController {
 
     @GetMapping("/")
     public String hello() {
-        return "Hello World";
+        return "Hello World there";
     }
 
     @GetMapping("/users")
     public List<String> getUsers() {
-        return List.of("user1", "user2", "user3");
+        return List.of("user1", "user2", "user3", "user4");
     }
 }
