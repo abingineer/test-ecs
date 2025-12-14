@@ -4,18 +4,15 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: clean and install
-        run: mvn clean install -DskiptTests=true
+     - uses: actions/checkout@v3
+       name: Checkout code
+     - uses: actions/setup-java@v3
+       with:
+           distribution: 'temurin'
+           java-version: '21'
+     - name: Clean
+       run: mvn clean install -DskiptTests=true
