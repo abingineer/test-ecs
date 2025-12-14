@@ -2,4 +2,4 @@ spring:
   application:
     name: testecs
 server:
-  port: 8084
+  port: 8080
