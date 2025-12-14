@@ -1,9 +1,4 @@
 {
-  "compatibilities": [
-    "EC2",
-    "MANAGED_INSTANCES",
-    "FARGATE"
-  ],
   "containerDefinitions": [
     {
       "cpu": 0,
