@@ -15,4 +15,4 @@ jobs:
            distribution: 'temurin'
            java-version: '21'
      - name: Clean
-       run: mvn clean install -DskiptTests=true
+       run: mvn clean install -DskiptTests
