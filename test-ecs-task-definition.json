@@ -33,7 +33,6 @@
     }
   ],
   "cpu": "1024",
-  "enableFaultInjection": false,
   "executionRoleArn": "arn:aws:iam::352854872264:role/ecsTaskExecutionRole",
   "family": "test-ecs-task",
   "memory": "3072",
