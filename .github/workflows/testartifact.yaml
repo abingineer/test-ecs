@@ -6,9 +6,9 @@ on:
       - test-artifact
 jobs:
   build-and-test:
-    permissions:
-      packages: write
-      contents: read
+#    permissions:
+#      packages: write
+#      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,9 +33,9 @@ jobs:
           path: Dockerfile
 
   buil-mage-and-push-to-ecr:
-    permissions:
-      packages: write
-      contents: read
+#    permissions:
+#      packages: write
+#      contents: read
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
