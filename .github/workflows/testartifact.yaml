@@ -1,9 +1,9 @@
-name: Test CI
+name: Test artifact
 
 on:
   push:
     branches:
-      - main
+      - test-artifact
 jobs:
   build-and-test:
     permissions:
@@ -23,8 +23,8 @@ jobs:
       - name: Archive le jar resultat du build
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: appjar
-          path: target/*.jar
+          name: testecs
+          path: target/testecs.jar
 
       - name: Archive le fichier Dockerfile
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -75,4 +75,3 @@ jobs:
           docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-     
