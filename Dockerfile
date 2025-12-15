@@ -1,22 +1,34 @@
 # Utiliser une image légère avec JDK 21 version optimisée
+# -----------------------------
+# Phase 1 : Build
+# -----------------------------
 FROM eclipse-temurin:21-jdk-alpine AS build
 
-# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier uniquement le fichier JAR nécessaire
+# Copier le JAR (ou le code source si vous voulez compiler ici)
 COPY testecs.jar .
 
-# Exposer le port de l'application
-EXPOSE 8080
+# -----------------------------
+# Phase 2 : Runtime léger
+# -----------------------------
+FROM eclipse-temurin:21-jre-alpine AS runtime
 
-# Exécuter l'application avec un utilisateur non root
-# Créer un utilisateur non privilégié
+WORKDIR /app
+
+# Copier uniquement le JAR depuis la phase de build
+COPY --from=build /app/testecs.jar .
+
+# Créer un utilisateur non root
 #RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 #USER appuser
 
-# Commande pour lancer l'application
+# Exposer le port
+EXPOSE 8080
+
+# Commande pour exécuter l'application
 CMD ["java", "-jar", "testecs.jar"]
+
 
 
 
