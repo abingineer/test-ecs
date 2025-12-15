@@ -42,7 +42,7 @@ jobs:
       - name: Téléchargement des résultats de tests
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: appjar
+          name: testecs
 
       - name: Téléchargement du fichier Dockerfile
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
