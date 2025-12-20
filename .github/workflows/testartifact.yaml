@@ -76,3 +76,16 @@ jobs:
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.33.1
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          REPOSITORY: testecs
+        with:
+            image-ref: $ECR_REGISTRY/$REPOSITORY:latest
+            format: 'table'
+            exit-code: '1'
+            ignore-unfixed: true
+            severity: 'CRITICAL,HIGH'
