@@ -6,6 +6,9 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
+# Mise à jour de l'OS Alpine (corrige libpng) après le scan de trivy
+RUN apk update && apk upgrade --no-cache
+
 # Copier le JAR (ou le code source si vous voulez compiler ici)
 COPY testecs.jar .
 
