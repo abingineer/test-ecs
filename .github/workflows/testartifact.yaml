@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - test-artifact
+
+env:
+  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+  IMAGE_TAG: ${{ github.sha }}
+  REPOSITORY: testecs
+
 jobs:
   build-and-test:
 #    permissions:
@@ -62,12 +68,23 @@ jobs:
         with:
           mask-password: 'true'
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build image
         id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-          REPOSITORY: testecs
+        run: |
+          # Build a docker container
+          docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$REPOSITORY:latest .
+
+      - name: Scan image with trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+            image-ref: ${{ env.ECR_REGISTRY }}/${{ env.REPOSITORY }}:latest
+            format: 'table'
+            exit-code: '1'
+            ignore-unfixed: true
+            severity: 'CRITICAL,HIGH'
+
+      - name: Push image to Amazon ECR
+        id: push-image
         run: |
           # Build a docker container and
           # push it to ECR so that it can
@@ -75,19 +92,4 @@ jobs:
           docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$REPOSITORY:latest .
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$REPOSITORY:latest
-          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-      - name: Show built image
-        run: docker image ls
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.33.1
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-          REPOSITORY: testecs
-        with:
-            image-ref: ${{ env.ECR_REGISTRY }}/${{ env.REPOSITORY }}:latest
-            format: 'table'
-            exit-code: '1'
-            ignore-unfixed: true
-            severity: 'CRITICAL,HIGH'
+          # echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
